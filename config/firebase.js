@@ -1,23 +1,22 @@
-import { Constants } from "expo-camera";
-import { initializeApp } from "firebase/app";
-
-// Optionally import the services that you want to use
-//import {...} from "firebase/auth";
-//import {...} from "firebase/database";
-//import {...} from "firebase/firestore";
-//import {...} from "firebase/functions";
-//import {...} from "firebase/storage";
+// @refresh reset
+import Constants from "expo-constants";
+import { initializeApp, getApps, getApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
 
 // Initialize Firebase
 const firebaseConfig = {
-  apiKey: Constants.manifest?.extra?.firebaseApiKey,
-  authDomain: Constants.manifest?.extra?.authDomain,
-  databaseURL: Constants.manifest?.extra?.databaseURL,
-  projectId: Constants.manifest?.extra?.projectId,
-  storageBucket: Constants.manifest?.extra?.storageBucket,
-  messagingSenderId: Constants.manifest?.extra?.messagingSenderId,
-  appId: Constants.manifest?.extra?.appId,
-  measurementId: Constants.manifest?.extra?.measurementId,
+  apiKey: Constants.manifest.extra.firebaseApiKey,
+  authDomain: Constants.manifest.extra.firebaseAuthDomain,
+  projectId: Constants.manifest.extra.firebaseProjectId,
+  storageBucket: Constants.manifest.extra.firebaseStorageBucket,
+  messagingSenderId: Constants.manifest.extra.firebaseMessagingSenderId,
+  appId: Constants.manifest.extra.firebaseAppId,
+  measurementId: Constants.manifest.extra.measurementId,
 };
 
-initializeApp(firebaseConfig);
+//if (!getApps().length) {
+const app = initializeApp(firebaseConfig);
+//} else {
+//  const app = getApp();
+//}
+export const db = getFirestore(app);

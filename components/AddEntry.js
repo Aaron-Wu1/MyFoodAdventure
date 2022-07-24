@@ -10,6 +10,8 @@ import {
 } from "react-native";
 import { Camera, CameraType } from "expo-camera";
 import SvgUri from "expo-svg-uri";
+import { db } from "../config/firebase";
+import { collection, addDoc, doc, setDoc, Timestamp } from "firebase/firestore";
 
 const AddEntry = ({ setShowAddEntry, showAddEntry, onAdd }) => {
   const [hasPermission, setHasPermission] = useState(null);
@@ -31,12 +33,51 @@ const AddEntry = ({ setShowAddEntry, showAddEntry, onAdd }) => {
     return <Text>No access to camera, please enable it in settings</Text>;
   }
 
+  // const Create = () => {
+  //   // MARK: Creating New Doc in Firebase
+  //   // Before that enable Firebase in Firebase Console
+  //   const myDoc = doc(db, "Entries", "test");
+
+  //   // Your Document Goes Here
+  //   const docData = {
+  //     restaurantName: restaurantName,
+  //     rating: 10,
+  //     review: review,
+  //   };
+
+  //   setDoc(myDoc, docData)
+  //     // Handling Promises
+  //     .then(() => {
+  //       // MARK: Success
+  //       alert("Document Created!");
+  //     })
+  //     .catch((error) => {
+  //       // MARK: Failure
+  //       alert(error.message);
+  //     });
+  // };
+
+  const handleSubmit = async () => {
+    try {
+      await addDoc(collection(db, "restaurants"), {
+        restaurantName: restaurantName,
+        rating: rating,
+        review: review,
+      });
+    } catch (err) {
+      alert(err);
+    }
+    //  console.log("Document written with ID: ", docRef.id);
+  };
+
   const AddEntry = () => {
     if (!restaurantName) {
       alert("Please add a restaurant name");
       return;
     }
     onAdd({ restaurantName, rating, review });
+    handleSubmit();
+    //Create();
 
     setRestaurantName("");
     setReview("");
@@ -49,7 +90,7 @@ const AddEntry = ({ setShowAddEntry, showAddEntry, onAdd }) => {
     >
       <TouchableOpacity style={styles.saveBtn}>
         <Text
-          style={{ fontSize: "18", color: "blue", textAlign: "right" }}
+          style={{ fontSize: 18, color: "blue", textAlign: "right" }}
           onPress={() => {
             setShowAddEntry(!showAddEntry);
             AddEntry();

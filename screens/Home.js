@@ -38,6 +38,10 @@ export default function Home() {
     },
   ]);
 
+  if (!loaded) {
+    return null;
+  }
+
   // Add entry
   const addEntry = (entry) => {
     const id = Math.floor(Math.random() * 10000) + 1;
