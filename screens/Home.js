@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import { useFonts } from "expo-font";
 import SvgUri from "expo-svg-uri";
-import Entries from "../components/Entries";
+import EntriesManager from "../components/EntriesManager";
 import AddEntry from "../components/AddEntry";
 import { useState } from "react";
 
@@ -21,33 +21,17 @@ export default function Home() {
     NunitoBold: require("../assets/fonts/Nunito-Bold.ttf"),
   });
   const [showAddEntry, setShowAddEntry] = useState(false);
-  const [entries, setEntries] = useState([
-    {
-      id: 1,
-      restaurantName: "Restaurant 1",
-      image: "https://reactnative.dev/img/tiny_logo.png",
-      review: "this is mid",
-    },
-    {
-      id: 2,
-      restaurantName: "Restaurant 2",
-    },
-    {
-      id: 3,
-      restaurantName: "Restaurant 2",
-    },
-  ]);
 
   if (!loaded) {
     return null;
   }
 
-  // Add entry
-  const addEntry = (entry) => {
-    const id = Math.floor(Math.random() * 10000) + 1;
-    const newEntry = { id, ...entry };
-    setEntries([...entries, newEntry]);
-  };
+  // // Add entry
+  // const addEntry = (entry) => {
+  //   const id = Math.floor(Math.random() * 10000) + 1;
+  //   const newEntry = { id, ...entry };
+  //   setEntries([...entries, newEntry]);
+  // };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -55,11 +39,12 @@ export default function Home() {
         <Text style={styles.title}>My Food Adventure</Text>
       </View>
       <ScrollView style={styles.entryWrapper}>
-        {entries.length > 0 ? (
-          <Entries entries={entries} />
+        <EntriesManager />
+        {/* {entries.length > 0 ? (
+          <EntriesManager entries={entries} />
         ) : (
           "No Entries To Show"
-        )}
+        )} */}
       </ScrollView>
       <Modal
         animationType="slide"
@@ -72,7 +57,7 @@ export default function Home() {
             <AddEntry
               showAddEntry={showAddEntry}
               setShowAddEntry={setShowAddEntry}
-              onAdd={addEntry}
+              //onAdd={addEntry}
             />
           </View>
         </View>

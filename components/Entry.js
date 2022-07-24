@@ -6,7 +6,7 @@ const Entry = ({ entry }) => {
     <View style={styles.entry}>
       <Image
         style={{ width: 200, height: 200 }}
-        source={{ uri: entry.image }}
+        //source={{ uri: entry.image }}
       />
       <Text style={styles.restaurantName}>
         Restaurant Name:{entry.restaurantName}

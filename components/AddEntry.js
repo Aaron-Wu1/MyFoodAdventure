@@ -63,6 +63,7 @@ const AddEntry = ({ setShowAddEntry, showAddEntry, onAdd }) => {
         restaurantName: restaurantName,
         rating: rating,
         review: review,
+        created: Timestamp.now(),
       });
     } catch (err) {
       alert(err);
@@ -75,7 +76,7 @@ const AddEntry = ({ setShowAddEntry, showAddEntry, onAdd }) => {
       alert("Please add a restaurant name");
       return;
     }
-    onAdd({ restaurantName, rating, review });
+    //onAdd({ restaurantName, rating, review });
     handleSubmit();
     //Create();
 
