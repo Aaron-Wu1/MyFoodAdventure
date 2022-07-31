@@ -1,8 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { doc, updateDoc } from "firebase/firestore";
-import { db } from "./firebase";
-import { BackHandler } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  KeyboardAvoidingView,
+  TextInput,
+  TouchableOpacity,
+} from "react-native";
+import SvgUri from "expo-svg-uri";
 import { Camera, CameraType } from "expo-camera";
+import { doc, updateDoc } from "firebase/firestore";
+import { db } from "../config/firebase";
 
 const EditEntry = ({ setShowEditEntry, showEditEntry }) => {
   const [hasPermission, setHasPermission] = useState(null);
@@ -23,20 +31,51 @@ const EditEntry = ({ setShowEditEntry, showEditEntry }) => {
       alert(err);
     }
   };
+
+  useEffect(() => {
+    (async () => {
+      const { status } = await Camera.requestCameraPermissionsAsync();
+      setHasPermission(status === "granted");
+    })();
+  }, []);
+  if (hasPermission === null) {
+    return <View />;
+  }
+  if (hasPermission === false) {
+    return <Text>No access to camera, please enable it in settings</Text>;
+  }
+
   const editEntry = () => {
     if (!restaurantName) {
       alert("Please add a restaurant name");
       return;
     }
-    //onAdd({ restaurantName, rating, review });
     handleUpdate();
-    //Create();
 
     setRestaurantName("");
     setReview("");
   };
   return (
-    <div>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "IOS" ? "padding" : "height"}
+      style={styles.EditEntryWrapper}
+    >
+      <View style={styles.cameraWrapper}>
+        <Camera style={styles.camera} type={type}>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => {
+                setType(
+                  type === CameraType.back ? CameraType.front : CameraType.back
+                );
+              }}
+            >
+              <Text style={styles.text}> Flip </Text>
+            </TouchableOpacity>
+          </View>
+        </Camera>
+      </View>
       <TextInput
         //style={styles.entryNameInput}
         placeholder={"Restaurant name"}
@@ -66,7 +105,7 @@ const EditEntry = ({ setShowEditEntry, showEditEntry }) => {
       <TouchableOpacity
         style={styles.xBtn}
         onPress={() => {
-          setShowAddEntry(!showAddEntry);
+          setShowEditEntry(!showEditEntry);
         }}
       >
         <SvgUri
@@ -78,8 +117,48 @@ const EditEntry = ({ setShowEditEntry, showEditEntry }) => {
           }}
         />
       </TouchableOpacity>
-    </div>
+    </KeyboardAvoidingView>
   );
 };
+
+const styles = StyleSheet.create({
+  EditEntryWrapper: {
+    postion: "absolute",
+    padding: 30,
+    flex: 1,
+    backgroundColor: "#fff",
+  },
+  cameraWrapper: {
+    borderRadius: 15,
+    width: 300,
+    height: 300,
+    alignSelf: "center",
+  },
+  camera: {
+    borderRadius: 15,
+    width: 300,
+    height: 300,
+    alignSelf: "center",
+    padding: 8,
+  },
+  entryNameInput: {
+    top: 20,
+    padding: 10,
+    borderRadius: 15,
+    backgroundColor: "#fff",
+  },
+  ratingEntryInput: {
+    borderRadius: 15,
+    padding: 10,
+    top: 30,
+    backgroundColor: "#fff",
+  },
+  reviewEntryInput: {
+    borderRadius: 15,
+    padding: 10,
+    top: 40,
+    backgroundColor: "#fff",
+  },
+});
 
 export default EditEntry;

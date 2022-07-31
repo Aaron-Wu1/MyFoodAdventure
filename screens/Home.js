@@ -13,6 +13,7 @@ import { useFonts } from "expo-font";
 import SvgUri from "expo-svg-uri";
 import EntriesManager from "../components/EntriesManager";
 import AddEntry from "../components/AddEntry";
+import EditEntry from "../components/EditEntry";
 import { useState } from "react";
 
 // View -> UIView
