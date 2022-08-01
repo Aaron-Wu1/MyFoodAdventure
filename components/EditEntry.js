@@ -12,21 +12,20 @@ import { Camera, CameraType } from "expo-camera";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../config/firebase";
 
-const EditEntry = ({ setShowEditEntry, showEditEntry }) => {
+const EditEntry = ({ setShowEditEntry, showEditEntry, entry, id }) => {
   const [hasPermission, setHasPermission] = useState(null);
   const [type, setType] = useState(CameraType.back);
   const [restaurantName, setRestaurantName] = useState("");
   const [rating, setRating] = useState("");
   const [review, setReview] = useState("");
   const handleUpdate = async () => {
-    const entryDocRef = doc(db, "entries", id);
+    const entryDocRef = doc(db, "restaurants", id);
     try {
-      await updateDoc(taskDocRef, {
+      await updateDoc(entryDocRef, {
         restaurantName: restaurantName,
         rating: rating,
         review: review,
       });
-      onClose();
     } catch (err) {
       alert(err);
     }

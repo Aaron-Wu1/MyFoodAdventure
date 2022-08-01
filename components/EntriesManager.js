@@ -23,7 +23,7 @@ const EntriesManager = () => {
   return (
     <>
       {entries.map((entry) => (
-        <Entry key={entry.id} entry={entry.data} />
+        <Entry id={entry.id} entry={entry.data} />
       ))}
     </>
   );

@@ -10,7 +10,7 @@ import {
 import SvgUri from "expo-svg-uri";
 import EditEntry from "./EditEntry";
 
-const Entry = ({ entry }) => {
+const Entry = ({ id, entry }) => {
   const [showEditEntry, setShowEditEntry] = useState(false);
 
   return (
@@ -40,13 +40,15 @@ const Entry = ({ entry }) => {
         <EditEntry
           showEditEntry={showEditEntry}
           setShowEditEntry={setShowEditEntry}
+          entry={entry}
+          id={id}
         />
       </Modal>
 
       <Text style={styles.restaurantName}>
         Restaurant Name:{entry.restaurantName}
       </Text>
-      <Text>ID: {entry.id}</Text>
+      <Text>ID: {id}</Text>
       <Text>review: {entry.review}</Text>
     </View>
   );
